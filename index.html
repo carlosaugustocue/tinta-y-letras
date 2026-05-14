@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tinta & Letras — Librería Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Lato:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary:  { DEFAULT: '#2D4A3E', dark: '#1e3329', light: '#3d6455' },
+            accent:   { DEFAULT: '#C8A97E', dark: '#a8845a' },
+            cream:    { DEFAULT: '#FAF8F5', alt: '#f0ece4' },
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans:  ['Lato', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* ── Hero premium — estilos inline para ganar especificidad sobre Tailwind CDN ── */
+    #hero.hero-section {
+      display: grid !important;
+      grid-template-columns: 55fr 45fr;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(ellipse 80% 80% at 30% 50%, #3d6455 0%, #2D4A3E 45%, #1e3329 100%) !important;
+    }
+    #hero.hero-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 300px 300px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    #hero.hero-section::after {
+      content: "";
+      position: absolute;
+      top: -10%; right: 42%;
+      width: 1px; height: 120%;
+      background: linear-gradient(to bottom, transparent, rgba(200,169,126,0.15) 30%, rgba(200,169,126,0.15) 70%, transparent);
+      transform: rotate(8deg);
+      pointer-events: none;
+      z-index: 0;
+    }
+    #hero .hero-text {
+      position: relative;
+      z-index: 1;
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6rem 4rem 6rem 6rem;
+    }
+    #hero .hero-eyebrow {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(200,169,126,0.65);
+      margin-bottom: 1.25rem;
+    }
+    #hero .hero-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      line-height: 1.0;
+      margin-bottom: 1.25rem;
+      display: flex !important;
+      flex-direction: column;
+      gap: 0.05em;
+    }
+    #hero .hero-title__thin {
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 600;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: -0.01em;
+    }
+    #hero .hero-title__amp {
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 600;
+      color: #C8A97E;
+      font-style: italic;
+      line-height: 1;
+      margin: -0.1em 0;
+    }
+    #hero .hero-title__bold {
+      font-size: clamp(4rem, 9vw, 8rem);
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.03em;
+      line-height: 0.9;
+    }
+    #hero .hero-tagline {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+      font-style: italic;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 1.5rem;
+    }
+    #hero .hero-body {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.65);
+      max-width: 440px;
+      margin-bottom: 2.5rem;
+    }
+    #hero .hero-ctas {
+      display: flex !important;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+    #hero .hero-btn {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.9rem 2rem;
+      border-radius: 4px;
+      transition: all 200ms ease;
+      text-decoration: none;
+      display: inline-block;
+      cursor: pointer;
+    }
+    #hero .hero-btn--primary {
+      background-color: #C8A97E !important;
+      color: #1e3329 !important;
+      border: 2px solid #C8A97E;
+      box-shadow: 0 4px 20px rgba(200,169,126,0.3);
+    }
+    #hero .hero-btn--primary:hover {
+      background-color: #a8845a !important;
+      border-color: #a8845a;
+      transform: translateY(-2px);
+    }
+    #hero .hero-btn--ghost {
+      background-color: transparent !important;
+      color: rgba(255,255,255,0.8) !important;
+      border: 2px solid rgba(255,255,255,0.25);
+    }
+    #hero .hero-btn--ghost:hover {
+      border-color: #C8A97E;
+      color: #C8A97E !important;
+      transform: translateY(-2px);
+    }
+    #hero .hero-stats {
+      display: flex !important;
+      align-items: center;
+    }
+    #hero .hero-stat {
+      display: flex !important;
+      flex-direction: column;
+      gap: 0.2rem;
+      padding: 0 1.5rem;
+    }
+    #hero .hero-stat:first-child { padding-left: 0; }
+    #hero .hero-stat strong {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #C8A97E;
+      line-height: 1;
+    }
+    #hero .hero-stat span {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+    #hero .hero-stat-divider {
+      width: 1px;
+      height: 36px;
+      background-color: rgba(200,169,126,0.25);
+      flex-shrink: 0;
+    }
+    #hero .hero-books {
+      position: relative;
+      z-index: 1;
+      display: flex !important;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 1.25rem;
+      padding: 5rem 4rem 4rem 2rem;
+    }
+    #hero .hero-book {
+      display: flex !important;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    #hero .hero-book img {
+      border-radius: 6px;
+      object-fit: cover;
+      display: block;
+      transition: transform 300ms ease, box-shadow 300ms ease;
+    }
+    #hero .hero-book figcaption {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.7rem;
+      color: rgba(200,169,126,0.6);
+      text-align: center;
+      font-style: italic;
+      max-width: 8rem;
+      line-height: 1.3;
+    }
+    #hero .hero-book--left {
+      transform: rotate(-6deg) translateY(20px);
+    }
+    #hero .hero-book--left img {
+      width: 120px; height: 170px;
+      box-shadow: -8px 16px 40px rgba(0,0,0,0.45);
+    }
+    #hero .hero-book--left:hover { transform: rotate(-3deg) translateY(12px); }
+    #hero .hero-book--left:hover img { transform: translateY(-8px); }
+    #hero .hero-book--center {
+      transform: translateY(-30px);
+      z-index: 2;
+    }
+    #hero .hero-book--center img {
+      width: 155px; height: 220px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(200,169,126,0.15);
+    }
+    #hero .hero-book--center:hover { transform: translateY(-44px); }
+    #hero .hero-book--center:hover img { transform: translateY(0); }
+    #hero .hero-book--right {
+      transform: rotate(6deg) translateY(20px);
+    }
+    #hero .hero-book--right img {
+      width: 120px; height: 170px;
+      box-shadow: 8px 16px 40px rgba(0,0,0,0.45);
+    }
+    #hero .hero-book--right:hover { transform: rotate(3deg) translateY(12px); }
+    #hero .hero-book--right:hover img { transform: translateY(-8px); }
+
+    @media (max-width: 1024px) {
+      #hero.hero-section {
+        grid-template-columns: 1fr !important;
+        min-height: auto;
+      }
+      #hero .hero-text {
+        padding: 5rem 2rem 2rem;
+        align-items: center;
+        text-align: center;
+      }
+      #hero .hero-title { align-items: center; }
+      #hero .hero-body { max-width: 520px; }
+      #hero .hero-ctas { justify-content: center; }
+      #hero .hero-stats { justify-content: center; }
+      #hero .hero-stat:first-child { padding-left: 1.5rem; }
+      #hero .hero-books { padding: 1rem 2rem 4rem; }
+    }
+    @media (max-width: 480px) {
+      #hero .hero-text { padding: 4rem 1.25rem 1.5rem; }
+      #hero .hero-book--left,
+      #hero .hero-book--right { display: none !important; }
+      #hero .hero-book--center { transform: translateY(0); }
+      #hero .hero-book--center img { width: 130px; height: 185px; }
+      #hero .hero-books { padding: 1rem 1.25rem 3rem; }
+    }
+  </style>
+</head>
+<body class="bg-cream text-gray-900 overflow-x-hidden font-sans">
+
+  <!-- ══════════════════════════════════════════════════ HEADER / NAV -->
+  <header class="sticky top-0 z-40 bg-primary shadow-lg">
+    <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center gap-6" aria-label="Navegación principal">
+
+      <a href="#hero" data-section="hero"
+         class="flex items-center gap-2 text-accent font-serif text-xl font-bold flex-shrink-0 hover:opacity-80 transition-opacity">
+        <span aria-hidden="true">📖</span>
+        Tinta & Letras
+      </a>
+
+      <!-- Desktop links -->
+      <ul class="hidden md:flex items-center gap-6 ml-auto" id="nav-links" role="list">
+        <li><a href="#hero"     data-section="hero"     class="text-white/90 hover:text-accent transition-colors text-sm font-medium">Inicio</a></li>
+        <li><a href="#catalog"  data-section="catalog"  class="text-white/90 hover:text-accent transition-colors text-sm font-medium">Catálogo</a></li>
+        <li><a href="#checkout" data-section="checkout" class="text-white/90 hover:text-accent transition-colors text-sm font-medium">Comprar</a></li>
+      </ul>
+
+      <!-- Cart button -->
+      <button id="cart-toggle-btn"
+              class="relative text-white hover:text-accent transition-colors text-2xl ml-auto md:ml-4 flex-shrink-0"
+              aria-label="Abrir carrito de compras">
+        🛒
+        <span id="cart-count"
+              class="absolute -top-1 -right-2 bg-accent text-primary text-[11px] font-bold min-w-[18px] h-[18px] rounded-full flex items-center justify-center px-1"
+              aria-live="polite">0</span>
+      </button>
+
+      <!-- Mobile hamburger -->
+      <button id="nav-toggle-btn"
+              class="md:hidden text-white p-2 rounded hover:bg-primary-light transition-colors"
+              aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-mobile">
+        <span class="block w-5 h-0.5 bg-white mb-1"></span>
+        <span class="block w-5 h-0.5 bg-white mb-1"></span>
+        <span class="block w-5 h-0.5 bg-white"></span>
+      </button>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div id="nav-mobile" class="hidden md:hidden bg-primary-dark border-t border-white/10">
+      <ul class="flex flex-col py-2 px-6" role="list">
+        <li><a href="#hero"     data-section="hero"     class="block py-3 text-white/90 hover:text-accent border-b border-white/10 text-sm">Inicio</a></li>
+        <li><a href="#catalog"  data-section="catalog"  class="block py-3 text-white/90 hover:text-accent border-b border-white/10 text-sm">Catálogo</a></li>
+        <li><a href="#checkout" data-section="checkout" class="block py-3 text-white/90 hover:text-accent text-sm">Comprar</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════ CART SIDEBAR -->
+  <aside id="cart-sidebar"
+         class="fixed top-0 right-0 w-full sm:w-96 h-full bg-white shadow-2xl z-50 flex flex-col translate-x-full transition-transform duration-300"
+         aria-label="Carrito de compras">
+
+    <div class="flex items-center justify-between px-6 py-4 bg-cream-alt border-b border-gray-200 flex-shrink-0">
+      <h2 class="font-serif text-primary text-lg font-semibold">Tu carrito</h2>
+      <button id="cart-close-btn" class="text-gray-400 hover:text-gray-700 transition-colors text-xl leading-none" aria-label="Cerrar carrito">✕</button>
+    </div>
+
+    <div id="cart-empty" class="flex flex-col items-center justify-center flex-1 gap-4 px-6 py-12 text-center text-gray-500" role="status">
+      <span class="text-5xl" aria-hidden="true">🛒</span>
+      <p class="text-sm leading-relaxed">Tu carrito está vacío.<br>Explora el catálogo y agrega tus libros favoritos.</p>
+    </div>
+
+    <div id="cart-content" class="hidden flex-col flex-1 overflow-hidden">
+      <ul id="cart-items-list" class="flex-1 overflow-y-auto px-4 py-3 flex flex-col gap-2" role="list" aria-label="Libros en el carrito"></ul>
+
+      <footer class="px-6 py-4 border-t border-gray-200 bg-cream-alt flex flex-col gap-3 flex-shrink-0">
+        <div class="flex justify-between items-center text-sm font-medium">
+          <span class="text-gray-600">Total</span>
+          <strong id="cart-total" class="text-primary text-xl font-serif">$0</strong>
+        </div>
+        <a href="#checkout" data-section="checkout" id="go-to-checkout-btn"
+           class="block w-full text-center bg-accent hover:bg-accent-dark text-primary font-semibold py-3 rounded-lg transition-colors">
+          Finalizar compra
+        </a>
+        <button id="clear-cart-btn" disabled
+                class="w-full border-2 border-primary text-primary font-semibold py-2.5 rounded-lg hover:bg-primary hover:text-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed text-sm">
+          Vaciar carrito
+        </button>
+      </footer>
+    </div>
+  </aside>
+
+  <!-- Cart overlay -->
+  <div id="cart-overlay" class="fixed inset-0 bg-black/50 z-40 hidden" aria-hidden="true"></div>
+
+  <!-- ══════════════════════════════════════════════════ BOOK DETAIL MODAL -->
+  <div id="book-detail-modal"
+       class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
+       role="dialog" aria-modal="true" aria-labelledby="detail-title">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+
+      <div class="flex items-start gap-6 p-8">
+        <!-- Cover -->
+        <div class="flex-shrink-0 detail-cover-wrap">
+          <img id="detail-cover" src="" alt=""
+               class="w-36 rounded-xl shadow-lg object-cover" style="height:196px;" />
+        </div>
+
+        <!-- Info -->
+        <div class="flex-1 min-w-0">
+          <span id="detail-genre"
+                class="inline-block text-xs font-bold uppercase tracking-widest text-accent-dark bg-cream-alt px-3 py-1 rounded-full mb-3"></span>
+          <h2 id="detail-title" class="font-serif text-primary text-2xl font-bold leading-tight mb-1"></h2>
+          <p id="detail-author" class="text-gray-500 italic text-sm mb-4"></p>
+          <p id="detail-description" class="text-gray-700 text-sm leading-relaxed mb-6"></p>
+
+          <div class="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <p id="detail-price" class="font-serif text-primary text-3xl font-bold"></p>
+              <p id="detail-stock" class="text-xs text-gray-400 mt-1"></p>
+            </div>
+            <button id="detail-add-btn"
+                    class="bg-accent hover:bg-accent-dark text-primary font-bold px-8 py-3 rounded-xl transition-colors text-sm">
+              Agregar al carrito
+            </button>
+          </div>
+        </div>
+
+        <!-- Close -->
+        <button id="detail-close-btn"
+                class="flex-shrink-0 text-gray-400 hover:text-gray-700 transition-colors text-2xl leading-none -mt-1"
+                aria-label="Cerrar detalle del libro">✕</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ CONFIRM MODAL -->
+  <div id="confirm-modal"
+       class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+       role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
+      <h2 id="modal-title" class="font-serif text-primary text-xl font-semibold mb-3">Confirmar acción</h2>
+      <p id="modal-message" class="text-gray-600 text-sm leading-relaxed mb-6"></p>
+      <div class="flex gap-3 justify-end">
+        <button id="modal-cancel-btn"
+                class="px-5 py-2.5 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm">
+          Cancelar
+        </button>
+        <button id="modal-confirm-btn"
+                class="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors text-sm">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════ MAIN -->
+  <main id="main-content">
+
+    <!-- ─────────────────────────── SECTION 1: HERO -->
+    <section id="hero" aria-labelledby="hero-title" class="hero-section">
+
+      <!-- Columna izquierda: texto -->
+      <div class="hero-text">
+
+        <p class="hero-eyebrow">Librería Digital</p>
+
+        <!-- h1 con contraste de pesos — sigue siendo un único h1 -->
+        <h1 id="hero-title" class="hero-title">
+          <span class="hero-title__thin">Tinta</span>
+          <span class="hero-title__amp">&amp;</span>
+          <span class="hero-title__bold">Letras</span>
+        </h1>
+
+        <p class="hero-tagline">Donde cada historia encuentra su lector</p>
+
+        <p class="hero-body">
+          Descubre los grandes títulos de la literatura latinoamericana y universal.
+          Clásicos, best‑sellers y joyas olvidadas — todos con envío a tu puerta.
+        </p>
+
+        <!-- CTAs -->
+        <div class="hero-ctas">
+          <a href="#catalog" data-section="catalog" class="hero-btn hero-btn--primary">
+            Explorar catálogo
+          </a>
+          <a href="#checkout" data-section="checkout" class="hero-btn hero-btn--ghost">
+            Comprar ahora
+          </a>
+        </div>
+
+        <!-- Stats con separadores -->
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <strong>10+</strong>
+            <span>Títulos</span>
+          </div>
+          <div class="hero-stat-divider" aria-hidden="true"></div>
+          <div class="hero-stat">
+            <strong>5</strong>
+            <span>Géneros</span>
+          </div>
+          <div class="hero-stat-divider" aria-hidden="true"></div>
+          <div class="hero-stat">
+            <strong>100%</strong>
+            <span>Digital</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Columna derecha: portadas -->
+      <div class="hero-books" aria-label="Libros destacados">
+
+        <figure class="hero-book hero-book--left">
+          <img src="https://b2clibrerianacional.vteximg.com.br/arquivos/ids/284396/Portada.jpg?v=638645706839530000"
+               alt="El Principito — Antoine de Saint-Exupéry" loading="eager" />
+          <figcaption>El Principito</figcaption>
+        </figure>
+
+        <figure class="hero-book hero-book--center">
+          <img src="https://b2clibrerianacional.vteximg.com.br/arquivos/ids/244798/Portada.jpg?v=638644376551230000"
+               alt="Cien años de soledad — Gabriel García Márquez" loading="eager" />
+          <figcaption>Cien años de soledad</figcaption>
+        </figure>
+
+        <figure class="hero-book hero-book--right">
+          <img src="https://b2clibrerianacional.vteximg.com.br/arquivos/ids/259442/Portada.jpg?v=638644867112170000"
+               alt="La sombra del viento — Carlos Ruiz Zafón" loading="eager" />
+          <figcaption>La sombra del viento</figcaption>
+        </figure>
+
+      </div>
+
+    </section>
+
+    <!-- ─────────────────────────── SECTION 2: CATALOG -->
+    <section id="catalog" aria-labelledby="catalog-title" class="py-20 px-6 max-w-7xl mx-auto w-full">
+
+      <div class="text-center mb-12">
+        <h2 id="catalog-title" class="font-serif text-primary text-4xl font-bold mb-3">Catálogo de libros</h2>
+        <p class="text-gray-500 text-base">Explora nuestra colección. Usa el buscador para encontrar tu próxima lectura.</p>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 mb-10 flex flex-wrap gap-4 items-end"
+           role="search" aria-label="Buscar y filtrar libros">
+
+        <div class="flex flex-col gap-1.5 flex-1 min-w-44">
+          <label for="search-input" class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Título o autor</label>
+          <input type="search" id="search-input" name="search"
+                 placeholder="Ej: García Márquez, 1984..."
+                 autocomplete="off"
+                 class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition" />
+        </div>
+
+        <div class="flex flex-col gap-1.5 flex-1 min-w-40">
+          <label for="genre-filter" class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Género</label>
+          <select id="genre-filter" name="genre"
+                  class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition bg-white">
+            <option value="">Todos los géneros</option>
+            <option value="Ficción">Ficción</option>
+            <option value="Romance">Romance</option>
+            <option value="Ciencia Ficción">Ciencia Ficción</option>
+            <option value="Clásico">Clásico</option>
+            <option value="Misterio">Misterio</option>
+            <option value="Fábula">Fábula</option>
+          </select>
+        </div>
+
+        <div class="flex gap-3 flex-shrink-0">
+          <button id="search-btn"
+                  class="bg-primary hover:bg-primary-dark text-white font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm disabled:opacity-60 disabled:cursor-not-allowed">
+            Buscar libros
+          </button>
+          <button id="apply-filter-btn"
+                  class="border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold px-5 py-2.5 rounded-lg transition-colors text-sm">
+            Aplicar filtro
+          </button>
+        </div>
+      </div>
+
+      <!-- Error banner -->
+      <p id="catalog-error-banner" class="hidden bg-red-50 border border-red-200 text-red-700 rounded-xl px-5 py-4 mb-6 text-sm" role="alert"></p>
+
+      <!-- Book grid -->
+      <div id="catalog-grid" class="catalog-grid" aria-live="polite" aria-label="Resultados del catálogo"></div>
+
+    </section>
+
+    <!-- ─────────────────────────── SECTION 3: CHECKOUT -->
+    <section id="checkout" aria-labelledby="checkout-title" class="bg-cream-alt py-20 px-6">
+
+      <div class="max-w-2xl mx-auto">
+        <div class="text-center mb-10">
+          <h2 id="checkout-title" class="font-serif text-primary text-4xl font-bold mb-3">Finalizar compra</h2>
+          <p class="text-gray-500 text-base">Completa tus datos para confirmar el pedido. Todos los campos son obligatorios.</p>
+        </div>
+
+        <p id="order-success-banner" class="hidden bg-green-50 border border-green-300 text-green-800 rounded-xl px-5 py-4 mb-6 text-sm" role="alert"></p>
+        <p id="order-error-banner"   class="hidden bg-red-50 border border-red-200 text-red-700 rounded-xl px-5 py-4 mb-6 text-sm" role="alert"></p>
+
+        <form id="checkout-form" novalidate aria-label="Formulario de compra"
+              class="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 flex flex-col gap-5">
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div class="flex flex-col gap-1.5">
+              <label for="full-name" class="text-sm font-semibold text-gray-700">Nombre completo</label>
+              <input type="text" id="full-name" name="full-name" autocomplete="name" required
+                     class="border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition aria-invalid:border-red-400" />
+              <p id="full-name-error" class="field-error text-red-700 text-xs min-h-4" role="alert"></p>
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label for="email" class="text-sm font-semibold text-gray-700">Correo electrónico</label>
+              <input type="email" id="email" name="email" autocomplete="email" required
+                     class="border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition" />
+              <p id="email-error" class="field-error text-red-700 text-xs min-h-4" role="alert"></p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div class="flex flex-col gap-1.5">
+              <label for="phone" class="text-sm font-semibold text-gray-700">Teléfono</label>
+              <input type="tel" id="phone" name="phone" autocomplete="tel" required
+                     class="border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition" />
+              <p id="phone-error" class="field-error text-red-700 text-xs min-h-4" role="alert"></p>
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label for="delivery-date" class="text-sm font-semibold text-gray-700">Fecha de entrega deseada</label>
+              <input type="date" id="delivery-date" name="delivery-date" required
+                     class="border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition" />
+              <p id="delivery-date-error" class="field-error text-red-700 text-xs min-h-4" role="alert"></p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div class="flex flex-col gap-1.5">
+              <label for="card-number" class="text-sm font-semibold text-gray-700">Número de tarjeta</label>
+              <input type="number" id="card-number" name="card-number" autocomplete="cc-number" required
+                     class="border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition" />
+              <p id="card-number-error" class="field-error text-red-700 text-xs min-h-4" role="alert"></p>
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label for="payment-method" class="text-sm font-semibold text-gray-700">Método de pago</label>
+              <select id="payment-method" name="payment-method" required
+                      class="border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition bg-white">
+                <option value="">Selecciona un método</option>
+                <option value="credit-card">Tarjeta de crédito</option>
+                <option value="debit-card">Tarjeta débito</option>
+                <option value="pse">PSE</option>
+                <option value="nequi">Nequi</option>
+                <option value="efecty">Efecty</option>
+              </select>
+              <p id="payment-method-error" class="field-error text-red-700 text-xs min-h-4" role="alert"></p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <label for="address" class="text-sm font-semibold text-gray-700">Dirección de envío</label>
+            <input type="text" id="address" name="address" autocomplete="street-address" required
+                   class="border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition" />
+            <p id="address-error" class="field-error text-red-700 text-xs min-h-4" role="alert"></p>
+          </div>
+
+          <button type="submit" id="submit-order-btn"
+                  class="w-full bg-accent hover:bg-accent-dark text-primary font-bold py-4 rounded-xl text-base transition-colors shadow-md disabled:opacity-60 disabled:cursor-not-allowed mt-2">
+            Confirmar pedido
+          </button>
+
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════════════════════════════ FOOTER -->
+  <footer class="bg-primary-dark text-white py-10 px-6 flex flex-col items-center gap-4 text-sm">
+    <p class="text-white/60">© 2026 Tinta & Letras — Librería Digital. Todos los derechos reservados.</p>
+    <nav aria-label="Navegación secundaria" class="flex gap-8">
+      <a href="#hero"     data-section="hero"     class="text-accent hover:opacity-75 transition-opacity">Inicio</a>
+      <a href="#catalog"  data-section="catalog"  class="text-accent hover:opacity-75 transition-opacity">Catálogo</a>
+      <a href="#checkout" data-section="checkout" class="text-accent hover:opacity-75 transition-opacity">Comprar</a>
+    </nav>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
