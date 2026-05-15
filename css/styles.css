@@ -605,3 +605,249 @@ select[aria-invalid="true"] {
   outline: 3px solid #C8A97E;
   outline-offset: 2px;
 }
+
+/* ══════════════════════════════════════════════════════ ORDER RECEIPT */
+
+.receipt-paper {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+}
+
+/* Borde perforado en la parte inferior del header */
+.receipt-header {
+  background: linear-gradient(135deg, #3d6455 0%, #2D4A3E 50%, #1e3329 100%);
+  padding: 2rem 2rem 2.5rem;
+  text-align: center;
+  position: relative;
+}
+
+/* Efecto de borde dentado (ticket) entre header y body */
+.receipt-header::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background-image: radial-gradient(circle at 10px 0, #fff 9px, transparent 9px);
+  background-size: 20px 20px;
+  background-color: transparent;
+}
+
+.receipt-success-icon {
+  width: 52px;
+  height: 52px;
+  background: #C8A97E;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-size: 1.4rem;
+  color: #1e3329;
+  font-weight: 900;
+  box-shadow: 0 4px 20px rgba(200,169,126,0.4);
+}
+
+.receipt-brand {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #C8A97E;
+  letter-spacing: -0.01em;
+}
+
+.receipt-subtitle {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-top: 0.3rem;
+}
+
+.receipt-body {
+  padding: 2rem 2rem 1rem;
+  background: #fff;
+}
+
+.receipt-order-id {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.receipt-order-label {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 0.3rem;
+}
+
+.receipt-order-number {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2D4A3E;
+  letter-spacing: 0.06em;
+}
+
+.receipt-dashed {
+  border: none;
+  border-top: 2px dashed #e5e7eb;
+  margin: 1.1rem 0;
+}
+
+.receipt-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.receipt-info-block label {
+  display: block;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 0.2rem;
+}
+
+.receipt-info-block span {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: #1f2937;
+  word-break: break-word;
+}
+
+.receipt-info-full {
+  margin-bottom: 0.5rem;
+}
+
+.receipt-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.receipt-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.receipt-item__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.receipt-item__name {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #374151;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.receipt-item__meta {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-top: 1px;
+}
+
+.receipt-item__price {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #2D4A3E;
+  flex-shrink: 0;
+}
+
+.receipt-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.receipt-total-label {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.receipt-total-amount {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #2D4A3E;
+}
+
+.receipt-footer-block {
+  background: #FAF8F5;
+  border-top: 2px dashed #e5e7eb;
+  padding: 1.25rem 2rem;
+  text-align: center;
+}
+
+.receipt-footer-block p {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #6b7280;
+  margin: 0;
+}
+
+.receipt-footer-block small {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.65rem;
+  color: #9ca3af;
+  display: block;
+  margin-top: 0.5rem;
+  letter-spacing: 0.08em;
+}
+
+.receipt-close-area {
+  padding: 1rem 2rem 1.5rem;
+  background: #FAF8F5;
+  display: flex;
+  justify-content: center;
+}
+
+.receipt-close-btn {
+  background: #2D4A3E;
+  color: #fff;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.85rem 2.5rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 200ms;
+  width: 100%;
+}
+
+.receipt-close-btn:hover {
+  background: #1e3329;
+}

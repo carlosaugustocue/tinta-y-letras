@@ -278,6 +278,7 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     closeBookDetail();
     closeModal();
+    closeReceiptModal();
   }
 });
 
@@ -419,14 +420,125 @@ checkoutForm.addEventListener("submit", async (e) => {
 
   if (result.ok) {
     const { orderId, estimatedDelivery } = result.data;
+    const cartSnapshot = [...cart];
     showBanner(orderSuccessBanner, `¡Pedido confirmado! Tu número de orden es ${orderId}. Entrega estimada: ${estimatedDelivery}.`);
     cart = [];
     renderCart();
     checkoutForm.reset();
+    showReceiptModal({ orderId, estimatedDelivery, customer, items: cartSnapshot, total });
   } else {
     showBanner(orderErrorBanner, result.message);
   }
 });
+
+// ── Receipt modal ──────────────────────────────────────────────────────────
+
+const PAYMENT_LABELS = {
+  "credit-card": "Tarjeta de crédito",
+  "debit-card":  "Tarjeta débito",
+  "pse":         "PSE",
+  "nequi":       "Nequi",
+  "efecty":      "Efecty",
+};
+
+function showReceiptModal({ orderId, estimatedDelivery, customer, items, total }) {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString("es-CO", { day: "2-digit", month: "long", year: "numeric" });
+  const timeStr = now.toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit" });
+
+  const itemsHtml = items.map((item) => `
+    <li class="receipt-item">
+      <div class="receipt-item__info">
+        <div class="receipt-item__name">${sanitizeText(item.title)}</div>
+        <div class="receipt-item__meta">${sanitizeText(item.author)} &middot; ×${item.quantity} &middot; ${formatCurrency(item.price)} c/u</div>
+      </div>
+      <div class="receipt-item__price">${formatCurrency(item.price * item.quantity)}</div>
+    </li>
+  `).join("");
+
+  document.getElementById("receipt-inner").innerHTML = `
+    <div class="receipt-header">
+      <div class="receipt-success-icon">✓</div>
+      <div class="receipt-brand">Tinta &amp; Letras</div>
+      <div class="receipt-subtitle">Recibo de compra</div>
+    </div>
+
+    <div class="receipt-body">
+      <div class="receipt-order-id">
+        <div class="receipt-order-label">Número de orden</div>
+        <div class="receipt-order-number" id="receipt-order-number">${orderId}</div>
+      </div>
+
+      <hr class="receipt-dashed" />
+
+      <div class="receipt-info-grid">
+        <div class="receipt-info-block">
+          <label>Cliente</label>
+          <span>${sanitizeText(customer.fullName)}</span>
+        </div>
+        <div class="receipt-info-block">
+          <label>Método de pago</label>
+          <span>${PAYMENT_LABELS[customer.paymentMethod] ?? customer.paymentMethod}</span>
+        </div>
+        <div class="receipt-info-block">
+          <label>Correo</label>
+          <span>${customer.email}</span>
+        </div>
+        <div class="receipt-info-block">
+          <label>Teléfono</label>
+          <span>${customer.phone}</span>
+        </div>
+      </div>
+      <div class="receipt-info-block receipt-info-full">
+        <label>Dirección de envío</label>
+        <span>${sanitizeText(customer.address)}</span>
+      </div>
+
+      <hr class="receipt-dashed" />
+
+      <ul class="receipt-items">${itemsHtml}</ul>
+
+      <hr class="receipt-dashed" />
+
+      <div class="receipt-total-row">
+        <span class="receipt-total-label">Total pagado</span>
+        <span class="receipt-total-amount">${formatCurrency(total)}</span>
+      </div>
+
+      <hr class="receipt-dashed" />
+
+      <div class="receipt-info-grid">
+        <div class="receipt-info-block">
+          <label>Fecha del pedido</label>
+          <span>${dateStr}, ${timeStr}</span>
+        </div>
+        <div class="receipt-info-block">
+          <label>Entrega estimada</label>
+          <span>${estimatedDelivery}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="receipt-footer-block">
+      <p>"Gracias por tu compra. ¡Disfruta tu lectura!"</p>
+      <small>Tinta &amp; Letras — Librería Digital &middot; ${dateStr}</small>
+    </div>
+
+    <div class="receipt-close-area">
+      <button id="receipt-close-btn" class="receipt-close-btn">Cerrar recibo</button>
+    </div>
+  `;
+
+  const modal = document.getElementById("order-receipt-modal");
+  modal.classList.remove("hidden");
+  modal.addEventListener("click", (e) => { if (e.target === modal) closeReceiptModal(); }, { once: true });
+  document.getElementById("receipt-close-btn").addEventListener("click", closeReceiptModal);
+  document.getElementById("receipt-close-btn").focus();
+}
+
+function closeReceiptModal() {
+  document.getElementById("order-receipt-modal").classList.add("hidden");
+}
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
